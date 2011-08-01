@@ -1,0 +1,14 @@
+*.mode*
+build/
+obj/
+*.o
+openFrameworks.a
+openFrameworksDebug.a
+openFrameworksUniversal.a
+*.app/
+xcuserdata
+project.xcworkspace
+.DS_Store
+#xcode files
+*.pbxuser
+*.perspectivev3
