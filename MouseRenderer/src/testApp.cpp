@@ -5,26 +5,43 @@
 void testApp::setup(){
 	ofBackground(255);
 
-	if (mouse.loadSettings("mouse_312011-07-31-23-55-06-863.xml")){
-		mouse.setLoop(true);
+	if (mouse.loadSettings("mouse.xml")){
+		mouse.setLoop(false);
 		mouse.startPlayback();
 	}
 	
 	ofEnableSmoothing();
 	ofEnableAlphaBlending();
+	ofSetCircleResolution(150);
 	
 	fbo.allocate(ofGetScreenWidth(), ofGetScreenHeight(), GL_RGB);
 	//ofSetBackgroundAuto(false);
+	
+	fbo.begin();{
+		ofSetColor(255);
+		ofRect(0,0,ofGetScreenWidth(), ofGetScreenHeight());
+	} fbo.end();
+	currentMouse = NULL;
+	lastMouse.x = lastMouse.y = -10;
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
+	if (currentMouse != NULL){
+		lastMouse.x = currentMouse->x;
+		lastMouse.y = currentMouse->y;
+		lastMouse.count = currentMouse->count;
+		lastMouse.button = currentMouse->button;
+	}
 	currentMouse = mouse.getCurrentMouseFrame();
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	fbo.begin();{
+		glEnable( GL_ALPHA_TEST );
+		ofEnableAlphaBlending();
+		
 		ofPushMatrix();{
 			ofTranslate(ofGetWidth()/2.0, ofGetHeight()/2.0f);
 			ofRotateZ( mouse.getNumLoops() );
@@ -35,22 +52,31 @@ void testApp::draw(){
 		ofPushStyle();{
 			switch ( currentMouse->eventType ){
 				case 0:  // moved
-					ofSetColor(50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 50);
+					ofSetColor(50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 20);
+					if (mouse.getCurrentElapsedTime() > 0.01) 
+						ofSetColor(50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 5);
 					break;
 				case 1: // down
-					ofSetColor(150, 0, 150*currentMouse->button, 100);
+					ofSetColor(150, 0, 150*currentMouse->button, 20);
 					break;
 				case 2: // up
-					ofSetColor(150*currentMouse->button, 150, 0, 75);
+					ofSetColor(150*currentMouse->button, 150, 0, 20);
 					break;
 				case 3: // dragged
-					ofSetColor(200, 150*currentMouse->button, 0, 200);
+					ofSetColor(200, 150*currentMouse->button, 0, 20);
 					break;
 			}
 			
 			// remember: mouse points are normalized to original screen
 			
-			ofCircle(currentMouse->x * ofGetScreenWidth(), currentMouse->y * ofGetScreenHeight(), 10+10*mouse.getCurrentElapsedTime());
+			if (lastMouse.x != -10){ // we've gotten > 1 mouse Point
+				ofSetLineWidth(1+3*mouse.getCurrentElapsedTime());
+				ofLine(lastMouse.x * ofGetScreenWidth(), lastMouse.y * ofGetScreenHeight(), currentMouse->x * ofGetScreenWidth(), currentMouse->y * ofGetScreenHeight());
+				ofNoFill();
+				ofSetLineWidth(.1);
+				ofCircle(currentMouse->x * ofGetScreenWidth(), currentMouse->y * ofGetScreenHeight(), 1+3*currentMouse->count);//mouse.getCurrentElapsedTime());
+				ofFill();
+			}
 		} ofPopStyle();
 	} fbo.end();
 	fbo.draw(0,0);
@@ -58,6 +84,14 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){
+	if (key == 's'){
+		// save as image
+		ofImage img;
+		ofPixels pix;
+		fbo.readToPixels(pix);
+		img.setFromPixels(pix);
+		img.saveImage("mouse_"+ofToString(ofGetDay())+"_"+ofGetTimestampString()+".png");
+	}
 }
 
 //--------------------------------------------------------------

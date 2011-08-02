@@ -23,6 +23,7 @@ class testApp : public ofBaseApp{
 
 		ofxMousePlayback mouse;
 		MouseFrame	*	 currentMouse;
+		MouseFrame		 lastMouse;
 	
 		ofFbo	fbo;
 };
