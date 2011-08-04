@@ -42,19 +42,13 @@ void testApp::draw(){
 		glEnable( GL_ALPHA_TEST );
 		ofEnableAlphaBlending();
 		
-		ofPushMatrix();{
-			ofTranslate(ofGetWidth()/2.0, ofGetHeight()/2.0f);
-			ofRotateZ( mouse.getNumLoops() );
-			ofTranslate(-ofGetWidth()/2.0, -ofGetHeight()/2.0f);
-		} ofPopMatrix();
+		ofBackground(255, 255,255,50);
 		
 		// what event type + what button?
 		ofPushStyle();{
 			switch ( currentMouse->eventType ){
 				case 0:  // moved
 					ofSetColor(50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 20);
-					if (mouse.getCurrentElapsedTime() > 0.01) 
-						ofSetColor(50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 50 + 100*currentMouse->button, 5);
 					break;
 				case 1: // down
 					ofSetColor(150, 0, 150*currentMouse->button, 20);
@@ -74,7 +68,7 @@ void testApp::draw(){
 				ofLine(lastMouse.x * ofGetScreenWidth(), lastMouse.y * ofGetScreenHeight(), currentMouse->x * ofGetScreenWidth(), currentMouse->y * ofGetScreenHeight());
 				ofNoFill();
 				ofSetLineWidth(.1);
-				ofCircle(currentMouse->x * ofGetScreenWidth(), currentMouse->y * ofGetScreenHeight(), 1+3*currentMouse->count);//mouse.getCurrentElapsedTime());
+				ofCircle(currentMouse->x * ofGetScreenWidth(), currentMouse->y * ofGetScreenHeight(), mouse.getCurrentElapsedTime());
 				ofFill();
 			}
 		} ofPopStyle();

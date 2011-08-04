@@ -28,12 +28,12 @@ void ofxMouseTracker::setWindow( ofxCocoaWindowNibless * _window ){
 //--------------------------------------------------------------
 // get properties
 //--------------------------------------------------------------
-bool		ofxMouseTracker::isRecording(){
+bool ofxMouseTracker::isRecording(){
 	return bRecording;
 }
 
 //--------------------------------------------------------------
-string		ofxMouseTracker::getCurrentFileName(){
+string ofxMouseTracker::getCurrentFileName(){
 	return currentFileName;
 }
 
@@ -60,17 +60,19 @@ void ofxMouseTracker::startRecording(){
 	output.clear();
 	output.addTag("mouseTracking");
 	
-	// add some nice data
-	output.addTag("info");
-	output.pushTag("info");{
-		output.addValue("date", ofToString(ofGetDay())+"/"+ofToString(ofGetMonth())+"/"+ofToString(ofGetYear()));
-		output.addValue("time_started", ofToString(ofGetHours())+":"+ofToString(ofGetMinutes())+":"+ofToString(ofGetSeconds()));
-		output.addValue("resolution_x", ofGetScreenWidth());
-		output.addValue("resolution_y", ofGetScreenHeight());
+	output.pushTag("mouseTracking");{
+		// add some nice data
+		output.addTag("info");
+		output.pushTag("info");{
+			output.addValue("date", ofToString(ofGetDay())+"/"+ofToString(ofGetMonth())+"/"+ofToString(ofGetYear()));
+			output.addValue("time_started", ofToString(ofGetHours())+":"+ofToString(ofGetMinutes())+":"+ofToString(ofGetSeconds()));
+			output.addValue("resolution_x", ofGetScreenWidth());
+			output.addValue("resolution_y", ofGetScreenHeight());
+		} output.popTag();
 	} output.popTag();
 	
-	ofRegisterMouseEvents(this); // attach OF mouse events
-	ofAddListener(cocoaEvents.mouseMovedOutsideEvent, this, &ofxMouseTracker::mouseMovedOutside);
+	registerMouseOutsideEvents(this);	// attach ofxCocoaWindowEvents
+	ofRegisterMouseEvents(this);		// attach mouse OF events
 	ofAddListener(ofEvents.update, this, &ofxMouseTracker::update); // attach update event
 	
 	bRecording = true;
@@ -86,7 +88,7 @@ void ofxMouseTracker::stopRecording(){
 	
 	output.pushTag("mouseTracking");{
 		output.pushTag("info");{
-			output.addValue("time_started", ofToString(ofGetHours())+":"+ofToString(ofGetMinutes())+":"+ofToString(ofGetSeconds()));
+			output.addValue("time_stopped", ofToString(ofGetHours())+":"+ofToString(ofGetMinutes())+":"+ofToString(ofGetSeconds()));
 		} output.popTag();
 	} output.popTag();
 	
@@ -94,7 +96,8 @@ void ofxMouseTracker::stopRecording(){
 	output.saveFile(currentFileName);
 	ofLog( OF_LOG_VERBOSE, "Saving to file "+currentFileName);
 	window->setCaptureExternalMouseEvents(false); // remove listener for all external mouse events
-	ofUnregisterMouseEvents(this); // detach mouse events
+	unregisterMouseOutsideEvents(this); // detach mouse events
+	ofUnregisterMouseEvents(this);		// detach mouse OF events
 	ofRemoveListener(ofEvents.update, this, &ofxMouseTracker::update); // remove update event
 };
 
@@ -131,140 +134,118 @@ void ofxMouseTracker::recordMouseFrame(){
 	bFirstFrame = false;
 }
 
+
 //--------------------------------------------------------------
+// UTILS for setting up current frames
+//--------------------------------------------------------------
+
+void ofxMouseTracker::setupLocalMouse(int x, int y, int button){
+	currentFrame.clear();
+	currentFrame.x		= x;
+	currentFrame.y		= y;
+	currentFrame.button	= button;
+	
+	// coords are relative to the window, so offset
+	currentFrame.x += ofGetWindowPositionX();
+	currentFrame.y += ofGetWindowPositionY();
+	
+};
+
+//--------------------------------------------------------------
+void ofxMouseTracker::setupOutsideMouse(int x, int y, int button){
+	currentFrame.clear();
+	currentFrame.x		= x;
+	currentFrame.y		= y;
+	currentFrame.button	= button;
+};
+
+//--------------------------------------------------------------
+// MOUSE LISTENERS
+//--------------------------------------------------------------
+
 void ofxMouseTracker::mouseMoved( ofMouseEventArgs & e ){
 	if (!bRecording) return;
 	
-	// step 1: add last position
+	// add last position + create new frame
 	
 	recordMouseFrame();
-	
-	// step 2: create new frame
-	
-	currentFrame.clear();
-	
-	// coords are relative to the window.
-	currentFrame.x		= e.x;
-	currentFrame.y		= e.y;
-	currentFrame.button	= e.button;
-	
-	currentFrame.x += ofGetWindowPositionX();
-	currentFrame.y += ofGetWindowPositionY();
-		
+	setupLocalMouse(e.x,e.y,e.button);
 	currentFrame.eventType	= 0; // moved
 }
 
 //--------------------------------------------------------------
-void ofxMouseTracker::mouseMovedOutside( ofMouseEventArgs & e ){
+void ofxMouseTracker::mousePressed( ofMouseEventArgs & e ){	
 	if (!bRecording) return;
 	
-	// step 1: add last position
+	// add last position + create new frame
 	
 	recordMouseFrame();
-	
-	// step 2: create new frame
-	
-	currentFrame.clear();
-	
-	// coords are relative to the window.
-	currentFrame.x		= e.x;
-	currentFrame.y		= e.y;
-	currentFrame.button	= e.button;
-	
-	// custom buttons from external events
-	if (e.button == 4 || e.button == 5){
-		currentFrame.button -= 4;
-		
-		// if internal, offset by the position of the window
-	} else {
-		currentFrame.x += ofGetWindowPositionX();
-		currentFrame.y += ofGetWindowPositionY();
-	}
-	
-	currentFrame.eventType	= 0; // moved
-}
+	setupLocalMouse(e.x,e.y,e.button);
+	currentFrame.eventType	= 1; // pressed
+};
 
 //--------------------------------------------------------------
 void ofxMouseTracker::mouseDragged( ofMouseEventArgs & e ){
 	if (!bRecording) return;
 	
-	// step 1: add last position
+	// add last position + create new frame
 	
 	recordMouseFrame();
-	
-	// step 2: create new frame
-	
-	currentFrame.clear();
-	currentFrame.x		= e.x;
-	currentFrame.y		= e.y;
-	currentFrame.button	= e.button;
-	
-	// custom buttons from external events
-	if (e.button == 4 || e.button == 5){
-		currentFrame.button -= 4;
-		
-		// if internal, offset by the position of the window
-	} else {
-		currentFrame.x += ofGetWindowPositionX();
-		currentFrame.y += ofGetWindowPositionY();
-	}
-	
-	
+	setupLocalMouse(e.x,e.y,e.button);
 	currentFrame.eventType	= 3; // dragged
-}
-
-//--------------------------------------------------------------
-void ofxMouseTracker::mousePressed( ofMouseEventArgs & e ){
-	if (!bRecording) return;
-	
-	// step 1: add last position
-	
-	recordMouseFrame();
-	
-	// step 2: create new frame
-	
-	currentFrame.clear();
-	currentFrame.x		= e.x;
-	currentFrame.y		= e.y;
-	currentFrame.button	= e.button;
-	
-	// custom buttons from external events
-	if (e.button == 4 || e.button == 5){
-		currentFrame.button -= 4;
-	
-	// if internal, offset by the position of the window
-	} else {
-		currentFrame.x += ofGetWindowPositionX();
-		currentFrame.y += ofGetWindowPositionY();
-	}
-	
-	currentFrame.eventType	= 1; // pressed
-}
+};
 
 //--------------------------------------------------------------
 void ofxMouseTracker::mouseReleased( ofMouseEventArgs & e ){
 	if (!bRecording) return;
-	// step 1: add last position
+	
+	// add last position + create new frame
 	
 	recordMouseFrame();
+	setupLocalMouse(e.x,e.y,e.button);
+	currentFrame.eventType	= 2; // released
+};
+
+//--------------------------------------------------------------
+void ofxMouseTracker::mouseMovedOutside( ofMouseEventArgs & e ){
+	if (!bRecording) return;
 	
-	// step 2: create new frame
+	// add last position + create new frame
 	
-	currentFrame.clear();
-	currentFrame.x		= e.x;
-	currentFrame.y		= e.y;
-	currentFrame.button	= e.button;
+	recordMouseFrame();
+	setupOutsideMouse(e.x,e.y,e.button);
+	currentFrame.eventType	= 0; // moved
+};
+
+//--------------------------------------------------------------
+void ofxMouseTracker::mouseDraggedOutside( ofMouseEventArgs & e ){
+	if (!bRecording) return;
 	
-	// custom buttons from external events
-	if (e.button == 4 || e.button == 5){
-		currentFrame.button -= 4;
-		
-		// if internal, offset by the position of the window
-	} else {
-		currentFrame.x += ofGetWindowPositionX();
-		currentFrame.y += ofGetWindowPositionY();
-	}
+	// add last position + create new frame
 	
+	recordMouseFrame();
+	setupOutsideMouse(e.x,e.y,e.button);
+	currentFrame.eventType	= 3; // dragged
+};
+
+//--------------------------------------------------------------
+void ofxMouseTracker::mousePressedOutside( ofMouseEventArgs & e ){
+	if (!bRecording) return;
 	
-	currentFrame.eventType	= 2; // pressed
-}
+	// add last position + create new frame
+	
+	recordMouseFrame();
+	setupOutsideMouse(e.x,e.y,e.button);
+	currentFrame.eventType	= 1; // pressed
+};
+
+//--------------------------------------------------------------
+void ofxMouseTracker::mouseReleasedOutside( ofMouseEventArgs & e ){
+	if (!bRecording) return;
+	
+	// add last position + create new frame
+	
+	recordMouseFrame();
+	setupOutsideMouse(e.x,e.y,e.button);
+	currentFrame.eventType	= 3; // released
+};

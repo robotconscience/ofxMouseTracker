@@ -27,7 +27,6 @@ public:
 	void setWindow( ofxCocoaWindowNibless * _window );
 	
 	// start/stop recording
-	void recordMouseFrame();
 	void startRecording();
 	void stopRecording();
 	
@@ -39,15 +38,22 @@ public:
 	
 	// of event listeners
 	void update( ofEventArgs & e);
-	void mouseMovedOutside( ofMouseEventArgs & e);
+	
 	void mouseMoved( ofMouseEventArgs & e );
-	void mouseDragged( ofMouseEventArgs & e );
 	void mousePressed( ofMouseEventArgs & e );
+	void mouseDragged( ofMouseEventArgs & e );
 	void mouseReleased( ofMouseEventArgs & e );
 	
+	void mouseMovedOutside( ofMouseEventArgs & e );
+	void mouseDraggedOutside( ofMouseEventArgs & e );
+	void mousePressedOutside( ofMouseEventArgs & e );
+	void mouseReleasedOutside( ofMouseEventArgs & e );
+
+private:	
 	
-	
-private:
+	void recordMouseFrame();
+	void setupLocalMouse(int x, int y, int button);
+	void setupOutsideMouse(int x, int y, int button);
 	
 	bool bWindowSet;
 	ofxCocoaWindowNibless * window;
