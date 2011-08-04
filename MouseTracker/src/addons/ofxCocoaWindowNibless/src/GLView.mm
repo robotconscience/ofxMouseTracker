@@ -469,43 +469,43 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 //------------------------------------------------------------
 -(void)mouseMoveOutside:(NSEvent *)theEvent {
 	ofPoint p = [self ofPointFromOutsideEvent:theEvent];
-	notifyMovedMouseOutsideEvent(p.x, p.y); 
+	notifyMouseMovedOutside(p.x, p.y); 
 }
 
 //------------------------------------------------------------
 -(void)mouseDownOutside:(NSEvent *)theEvent {
 	ofPoint p = [self ofPointFromOutsideEvent:theEvent];
-	ofNotifyMousePressed(p.x, p.y, 4);
+	notifyMousePressedOutside(p.x, p.y, 0); 
 }
 
 //------------------------------------------------------------
 -(void)rightMouseDownOutside:(NSEvent *)theEvent {
 	ofPoint p = [self ofPointFromOutsideEvent:theEvent];
-	ofNotifyMousePressed(p.x, p.y, 5);
+	notifyMousePressedOutside(p.x, p.y, 1);
 }
 
 //------------------------------------------------------------
 -(void)mouseDraggedOutside:(NSEvent *)theEvent {
 	ofPoint p = [self ofPointFromOutsideEvent:theEvent];
-	ofNotifyMouseDragged(p.x, p.y, 4);
+	notifyMouseDraggedOutside(p.x, p.y, 0);
 }
 
 //------------------------------------------------------------
 -(void)rightMouseDraggedOutside:(NSEvent *)theEvent {
 	ofPoint p = [self ofPointFromOutsideEvent:theEvent];
-	ofNotifyMouseDragged(p.x, p.y, 5);
+	notifyMouseDraggedOutside(p.x, p.y, 1);
 }
 
 //------------------------------------------------------------
 -(void)mouseUpOutside:(NSEvent *)theEvent {
 	ofPoint p = [self ofPointFromOutsideEvent:theEvent];
-	ofNotifyMouseReleased(p.x, p.y, 4);
+	notifyMouseReleasedOutside(p.x, p.y, 0);
 }
 
 //------------------------------------------------------------
 -(void)rightMouseUpOutside:(NSEvent *)theEvent {
 	ofPoint p = [self ofPointFromOutsideEvent:theEvent];
-	ofNotifyMouseReleased(p.x, p.y, 5);
+	notifyMouseReleasedOutside(p.x, p.y, 1);
 }
 
 @end
