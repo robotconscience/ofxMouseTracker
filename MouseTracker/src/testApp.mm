@@ -32,7 +32,6 @@ void testApp::draw(){
 	if (mouseTracker.isRecording()) ofBackground(0,200,0);
 	else ofBackground(200,0,0);
 	
-	
 	// instructions
 	ofDrawBitmapString("MouseTracker: track your mouse movements and presses!", 20,20);
 	ofDrawBitmapString("Press 'r' to start/stop recording", 20,35);

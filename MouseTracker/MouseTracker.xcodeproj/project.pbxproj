@@ -10,6 +10,8 @@
 		A090317C13E1EC3500CB0C53 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = A090317A13E1EC3500CB0C53 /* main.mm */; };
 		A090317D13E1EC3500CB0C53 /* testApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = A090317B13E1EC3500CB0C53 /* testApp.mm */; };
 		A090319813E1EC9300CB0C53 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A090319713E1EC9300CB0C53 /* CoreVideo.framework */; };
+		A944F13913EA4017001CCC1F /* ofxMousePlayback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A944F13513EA4017001CCC1F /* ofxMousePlayback.cpp */; };
+		A944F13A13EA4017001CCC1F /* ofxMouseTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = A944F13813EA4017001CCC1F /* ofxMouseTracker.mm */; };
 		A99DD5B813E62785000301C9 /* GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A99DD5B113E62785000301C9 /* GLView.mm */; };
 		A99DD5B913E62785000301C9 /* MyDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = A99DD5B313E62785000301C9 /* MyDelegate.mm */; };
 		A99DD5BA13E62785000301C9 /* ofxCocoaWindowNibless.mm in Sources */ = {isa = PBXBuildFile; fileRef = A99DD5B513E62785000301C9 /* ofxCocoaWindowNibless.mm */; };
@@ -17,8 +19,6 @@
 		A99DD67F13E63056000301C9 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A99DD67913E63056000301C9 /* tinyxmlerror.cpp */; };
 		A99DD68013E63056000301C9 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A99DD67A13E63056000301C9 /* tinyxmlparser.cpp */; };
 		A99DD68113E63056000301C9 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A99DD67C13E63056000301C9 /* ofxXmlSettings.cpp */; };
-		A99DD78413E63E0C000301C9 /* ofxMouseTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = A99DD78213E63E0C000301C9 /* ofxMouseTracker.mm */; };
-		A99DD7D713E643B2000301C9 /* ofxMousePlayback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A99DD7D613E643B2000301C9 /* ofxMousePlayback.cpp */; };
 		A99DDA5C13E65E3C000301C9 /* ofxCocoaWindowEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A99DDA5B13E65E3C000301C9 /* ofxCocoaWindowEvents.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -71,6 +71,11 @@
 		A090317A13E1EC3500CB0C53 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		A090317B13E1EC3500CB0C53 /* testApp.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = testApp.mm; sourceTree = "<group>"; };
 		A090319713E1EC9300CB0C53 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
+		A944F13413EA4017001CCC1F /* MouseFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseFrame.h; sourceTree = "<group>"; };
+		A944F13513EA4017001CCC1F /* ofxMousePlayback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMousePlayback.cpp; sourceTree = "<group>"; };
+		A944F13613EA4017001CCC1F /* ofxMousePlayback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMousePlayback.h; sourceTree = "<group>"; };
+		A944F13713EA4017001CCC1F /* ofxMouseTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMouseTracker.h; sourceTree = "<group>"; };
+		A944F13813EA4017001CCC1F /* ofxMouseTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxMouseTracker.mm; sourceTree = "<group>"; };
 		A99DD5B013E62785000301C9 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
 		A99DD5B113E62785000301C9 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLView.mm; sourceTree = "<group>"; };
 		A99DD5B213E62785000301C9 /* MyDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDelegate.h; sourceTree = "<group>"; };
@@ -83,11 +88,6 @@
 		A99DD67A13E63056000301C9 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		A99DD67C13E63056000301C9 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		A99DD67D13E63056000301C9 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
-		A99DD78213E63E0C000301C9 /* ofxMouseTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxMouseTracker.mm; sourceTree = "<group>"; };
-		A99DD78313E63E0C000301C9 /* ofxMouseTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMouseTracker.h; sourceTree = "<group>"; };
-		A99DD78513E63E29000301C9 /* MouseFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseFrame.h; sourceTree = "<group>"; };
-		A99DD7D513E643B2000301C9 /* ofxMousePlayback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMousePlayback.h; sourceTree = "<group>"; };
-		A99DD7D613E643B2000301C9 /* ofxMousePlayback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMousePlayback.cpp; sourceTree = "<group>"; };
 		A99DD98A13E65952000301C9 /* ofxCocoaWindowEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCocoaWindowEvents.h; sourceTree = "<group>"; };
 		A99DDA5B13E65E3C000301C9 /* ofxCocoaWindowEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCocoaWindowEvents.cpp; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
@@ -137,6 +137,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A944F13313EA4017001CCC1F /* ofxMouseTracker */ = {
+			isa = PBXGroup;
+			children = (
+				A944F13413EA4017001CCC1F /* MouseFrame.h */,
+				A944F13513EA4017001CCC1F /* ofxMousePlayback.cpp */,
+				A944F13613EA4017001CCC1F /* ofxMousePlayback.h */,
+				A944F13713EA4017001CCC1F /* ofxMouseTracker.h */,
+				A944F13813EA4017001CCC1F /* ofxMouseTracker.mm */,
+			);
+			name = ofxMouseTracker;
+			path = ../ofxMouseTracker;
+			sourceTree = SOURCE_ROOT;
+		};
 		A99DD58913E62785000301C9 /* ofxCocoaWindowNibless */ = {
 			isa = PBXGroup;
 			children = (
@@ -191,23 +204,10 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		A99DD77E13E63DE6000301C9 /* ofxMouseTracker */ = {
-			isa = PBXGroup;
-			children = (
-				A99DD78213E63E0C000301C9 /* ofxMouseTracker.mm */,
-				A99DD78313E63E0C000301C9 /* ofxMouseTracker.h */,
-				A99DD78513E63E29000301C9 /* MouseFrame.h */,
-				A99DD7D513E643B2000301C9 /* ofxMousePlayback.h */,
-				A99DD7D613E643B2000301C9 /* ofxMousePlayback.cpp */,
-			);
-			name = ofxMouseTracker;
-			path = src/addons/ofxMouseTracker;
-			sourceTree = "<group>";
-		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				A99DD77E13E63DE6000301C9 /* ofxMouseTracker */,
+				A944F13313EA4017001CCC1F /* ofxMouseTracker */,
 				A99DD67413E63056000301C9 /* ofxXmlSettings */,
 				A99DD58913E62785000301C9 /* ofxCocoaWindowNibless */,
 			);
@@ -384,9 +384,9 @@
 				A99DD67F13E63056000301C9 /* tinyxmlerror.cpp in Sources */,
 				A99DD68013E63056000301C9 /* tinyxmlparser.cpp in Sources */,
 				A99DD68113E63056000301C9 /* ofxXmlSettings.cpp in Sources */,
-				A99DD78413E63E0C000301C9 /* ofxMouseTracker.mm in Sources */,
-				A99DD7D713E643B2000301C9 /* ofxMousePlayback.cpp in Sources */,
 				A99DDA5C13E65E3C000301C9 /* ofxCocoaWindowEvents.cpp in Sources */,
+				A944F13913EA4017001CCC1F /* ofxMousePlayback.cpp in Sources */,
+				A944F13A13EA4017001CCC1F /* ofxMouseTracker.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
